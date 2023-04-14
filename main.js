@@ -25,6 +25,7 @@ function generateCars(n) {
     return cars;
 
 }
+    
 
 function animate() {
 

@@ -105,7 +105,7 @@ class Car {
                 this.controls.down = outputs[1];
                 this.controls.left = outputs[2];
                 this.controls.right = outputs[3];
-                console.log(this.controls);
+                //console.log(this.controls);
             }
         }
     }
