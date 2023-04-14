@@ -36,10 +36,15 @@ function animate() {
         cars[i].updatePosition(road.borders, traffic);
     }
 
+    const bestCar = cars.find (
+        c=>c.y==Math.min(...cars.map(c=>c.y))
+    );
+
+
     canvas.height = window.innerHeight - window.innerHeight * 0.1;
 
     ctx.save();
-    ctx.translate(0, -cars[0].y + canvas.height * 0.65);
+    ctx.translate(0, -bestCar.y + canvas.height * 0.65);
 
     road.drawRoad(ctx);
 
@@ -47,12 +52,19 @@ function animate() {
         traffic[i].drawCar(ctx);
     }
 
+    
+    ctx.globalAlpha = 0.3;
     for (let i = 0; i < cars.length; i++) {
-        cars[i].drawCar(ctx);
+        cars[i].drawCar(ctx, false);
     }
+
+    ctx.globalAlpha = 1;
+    bestCar.drawCar(ctx, true);
     //car.drawCar(ctx);
 
     ctx.restore();
 
+
+    
     requestAnimationFrame(animate); //this is a recursive function that calls itself over and over again
 }

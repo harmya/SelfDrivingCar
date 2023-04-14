@@ -38,7 +38,7 @@ class Car {
         this.controlByAI = type === "main" ? true : false;
     }
 
-    drawCar(ctx) {
+    drawCar(ctx, aware) {
 
         if (this.damaged) {
             ctx.fillStyle = 'red';
@@ -76,7 +76,7 @@ class Car {
         */
 
         //draw the awareness of the car
-        if (this.awareness) {
+        if (this.awareness && aware) {
             this.awareness.drawVision(ctx);
         }
     
