@@ -1,5 +1,5 @@
 class Car {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, color, type) {
         //position and size of the car
         this.x = x;
         this.y = y;
@@ -10,18 +10,46 @@ class Car {
         this.color = color;
         
         //movement attributes of the car
-        this.maxForwardSpeed = 5;
+        this.maxForwardSpeed = type == "main" ? 5 : 2;
         this.maxBackwardSpeed = 2;
         this.angle = 0;
-        this.speed = 0 ;
+        this.speed = 0;
         this.acceleration = 0.2;
         this.friction = 0.09;
 
         //controls of the car
-        this.controls = new Controls();
+        this.controls = new Controls(type);
+
+        //car awareness
+        
+        this.awareness = type == "main" ? new Awareness(this) : null;
+
+        //rectangle around the car
+        this.carRect = this.#createRectAroundCar();
+
+        //car damage
+        this.damaged = false;
     }
 
     drawCar(ctx) {
+
+        if (this.damaged) {
+            ctx.fillStyle = 'red';
+        } else {
+            ctx.fillStyle = this.color;
+        }
+
+        
+        ctx.beginPath();
+        ctx.moveTo(this.carRect[0].x, this.carRect[0].y);
+
+        for (let i = 1; i < this.carRect.length; i++) {
+            ctx.lineTo(this.carRect[i].x, this.carRect[i].y);
+        }
+
+        ctx.fill();
+
+        /*
         //save the current state of the canvas
         ctx.save();
 
@@ -38,12 +66,24 @@ class Car {
 
         //restore the canvas to its original state
         ctx.restore();
+        */
+
+        //draw the awareness of the car
+        if (this.awareness) {
+            this.awareness.drawVision(ctx);
+        }
     
     }
 
-    updatePosition() {
-        this.#moveCar();
-
+    updatePosition(roadBorders) {
+        if (!this.damaged) {
+            this.#moveCar();
+            this.carRect = this.#createRectAroundCar();
+            this.damaged = this.#checkDamage(roadBorders);
+        }
+        if (this.awareness) {
+            this.awareness.updateVision(roadBorders);
+        }
     }
 
     #moveCar() {
@@ -91,19 +131,62 @@ class Car {
         }
         
         
-
-        if (this.x < this.width) {
-            this.x = this.width;
+        
+        if (this.x < this.width / 2) {
+            this.x = this.width / 2;
         }
-        if (this.x > canvas.width - this.width) {
-            this.x = canvas.width - this.width;
+        if (this.x > canvas.width - this.width / 2) {
+            this.x = canvas.width - this.width / 2;
         }
         if (this.y > canvas.height - this.height) {
             this.y = canvas.height - this.height;
         }
+        
 
         
         this.x -= this.speed * Math.sin(this.angle);
         this.y -= this.speed * Math.cos(this.angle);
     }
+
+    #createRectAroundCar() {
+        const points = [];
+
+        const rad = Math.hypot(this.width, this.height) / 2;
+        const angle = Math.atan(this.height / this.width);
+
+        points.push({
+            x: this.x - rad * Math.sin(this.angle - angle + 0.2),
+            y: this.y - rad * Math.cos(this.angle - angle + 0.2)
+        });
+
+        points.push({
+            x: this.x - rad * Math.sin(this.angle + angle - 0.2),
+            y: this.y - rad * Math.cos(this.angle + angle - 0.2)
+        });
+
+        points.push({
+            x: this.x - rad * Math.sin(this.angle - angle + Math.PI),
+            y: this.y - rad * Math.cos(this.angle - angle + Math.PI)
+        });
+
+        points.push({
+            x: this.x - rad * Math.sin(this.angle + angle + Math.PI),
+            y: this.y - rad * Math.cos(this.angle + angle + Math.PI)
+        });
+
+        return points;
+
+    }
+
+    #checkDamage(roadBorders) {
+        for (let i = 0; i < roadBorders.length; i++) {
+            if (polysIntersect(this.carRect, roadBorders[i])) {
+                console.log('car damaged');
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

@@ -12,16 +12,15 @@ body {
     justify-content: center;
     align-items: center;
 
-    border-left: black solid 1px;
-    border-right: black solid 1px;
+    /* border-left: black solid 1px;
+    border-right: black solid 1px; */
 }
 #canvas {
     background: #403e39;
     color: #555555;
     font-size: 14px;
-    padding: 6px 12px;
-    border-left: darkgrey solid 10px;
-    border-right: darkgray solid 10px;
+    /* border-left: darkgrey solid 10px;
+    border-right: darkgray solid 10px; */
     border-bottom: white solid 10px; 
     /*set height to be the height of the entire page*/
 }

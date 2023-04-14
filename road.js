@@ -57,6 +57,3 @@ class Road {
         return laneCenter;
     }
 }
-function linearInterpolation(a, b, t) {
-    return a + (b - a) * t;
-}

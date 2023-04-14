@@ -1,11 +1,19 @@
 class Controls {
-    constructor() {
+    constructor(type) {
         this.left = false;
         this.right = false;
         this.up = false;
         this.down = false;
 
-        this.#addEventListeners(); //this is a private method, so we need to call it with the # symbol
+        switch (type) {
+            case "main":
+                this.#addEventListeners();
+                break;
+            case "dummy":
+                this.up = true;
+                break;
+        }
+    
     }
 
     #addEventListeners() {

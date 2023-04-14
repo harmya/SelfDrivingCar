@@ -4,19 +4,33 @@ canvas.height = window.innerHeight - window.innerHeight * 0.1;
 canvas.width = 200;
 
 const road = new Road(canvas.width/2, canvas.width * 0.9, 3); //road.js
+const car = new Car(road.getLaneCenter(2), 100, 50, 30, '#2192FF', "main");  // car.js
 
-const car = new Car(road.getLaneCenter(2), 100, 30, 50, 'red');  // car.js
+const traffic = [
+    new Car(road.getLaneCenter(1), 200, 50, 30, 'orange', "dummy")
+]
 
 animate();
 
 function animate() {
-    car.updatePosition();
+
+    for (let i = 0; i < traffic.length; i++) {
+        traffic[i].updatePosition(road.borders, []);
+    }
+    car.updatePosition(road.borders, traffic);
+
     canvas.height = window.innerHeight - window.innerHeight * 0.1;
 
     ctx.save();
     ctx.translate(0, -car.y + canvas.height * 0.65);
 
     road.drawRoad(ctx);
+
+    for (let i = 0; i < traffic.length; i++) {
+        traffic[i].drawCar(ctx);
+    }
+
+
     car.drawCar(ctx);
 
     ctx.restore();
