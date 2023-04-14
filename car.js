@@ -11,7 +11,7 @@ class Car {
         
         //movement attributes of the car
         let random_speed = 1 + Math.random() * 1.5;
-        this.maxForwardSpeed = type == "main" ? 5 : random_speed;
+        this.maxForwardSpeed = type === "main" ? 5 : random_speed;
         this.maxBackwardSpeed = 2;
         this.angle = 0;
         this.speed = 0;
@@ -25,6 +25,7 @@ class Car {
         
         if (type == "main") {
             this.awareness = new Awareness(this);
+            this.network = new NeuralNetwork([this.awareness.visionCount, 10, 10, 4]);
         }
 
         //rectangle around the car
@@ -32,6 +33,9 @@ class Car {
 
         //car damage
         this.damaged = false;
+
+        //car controlled by nerual network
+        this.controlByAI = type === "main" ? true : false;
     }
 
     drawCar(ctx) {
@@ -88,6 +92,21 @@ class Car {
 
         if (this.awareness) {
             this.awareness.updateVision(roadBorders, traffic);
+
+            const distancesToIntersections = this.awareness.detectBorder.map(
+                vis=>vis==null ? 0 : 1 - vis.offset
+            );
+            //console.log(distancesToIntersections);
+            const outputs = NeuralNetwork.networkFeedForward(distancesToIntersections, this.network);
+            //console.log(outputs);
+
+            if (this.controlByAI) {
+                this.controls.up = outputs[0];
+                this.controls.down = outputs[1];
+                this.controls.left = outputs[2];
+                this.controls.right = outputs[3];
+                console.log(this.controls);
+            }
         }
     }
 
@@ -144,7 +163,7 @@ class Car {
             this.x = canvas.width - this.width / 2;
         }
         if (this.y > canvas.height - this.height) {
-            this.y = canvas.height - this.height;
+            this.damaged = true;
         }
         
 

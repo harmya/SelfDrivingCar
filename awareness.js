@@ -84,7 +84,7 @@ class Awareness {
         if (borderHit.length > 0) {
             const hitDistances = borderHit.map(e => e.offset);
             const closestHit = Math.min(...hitDistances);
-            return borderHit.find(e => e.offset === closestHit);
+            return borderHit.find(e=>e.offset==closestHit);
         } else {
             return null;
         }
