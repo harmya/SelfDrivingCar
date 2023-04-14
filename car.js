@@ -10,7 +10,8 @@ class Car {
         this.color = color;
         
         //movement attributes of the car
-        this.maxForwardSpeed = type == "main" ? 5 : 2;
+        let random_speed = 1 + Math.random() * 1.5;
+        this.maxForwardSpeed = type == "main" ? 5 : random_speed;
         this.maxBackwardSpeed = 2;
         this.angle = 0;
         this.speed = 0;
@@ -22,7 +23,9 @@ class Car {
 
         //car awareness
         
-        this.awareness = type == "main" ? new Awareness(this) : null;
+        if (type == "main") {
+            this.awareness = new Awareness(this);
+        }
 
         //rectangle around the car
         this.carRect = this.#createRectAroundCar();
@@ -75,14 +78,16 @@ class Car {
     
     }
 
-    updatePosition(roadBorders) {
+    updatePosition(roadBorders, traffic) {
         if (!this.damaged) {
             this.#moveCar();
             this.carRect = this.#createRectAroundCar();
-            this.damaged = this.#checkDamage(roadBorders);
+            this.damaged = this.#checkDamage(roadBorders, traffic);
         }
+
+
         if (this.awareness) {
-            this.awareness.updateVision(roadBorders);
+            this.awareness.updateVision(roadBorders, traffic);
         }
     }
 
@@ -178,13 +183,20 @@ class Car {
 
     }
 
-    #checkDamage(roadBorders) {
+    #checkDamage(roadBorders, traffic) {
         for (let i = 0; i < roadBorders.length; i++) {
             if (polysIntersect(this.carRect, roadBorders[i])) {
-                console.log('car damaged');
                 return true;
             }
         }
+
+        for (let i = 0; i < traffic.length; i++) {
+            if (polysIntersect(this.carRect, traffic[i].carRect)) {
+                traffic[i].damaged = true;
+                return true;
+            }
+        }
+
         return false;
     }
 

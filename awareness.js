@@ -8,14 +8,14 @@ class Awareness {
         this.detectBorder = [];
     }
 
-    updateVision(roadBorders) {
+    updateVision(roadBorders, traffic) {
         this.#initVision();
 
         this.detectBorder = [];
         for (let i = 0; i < this.vision.length; i++) {
             const startVison = this.vision[i][0];
             const endVision = this.vision[i][1];
-            const detectBorder = this.#detectBorder(startVison, endVision, roadBorders);
+            const detectBorder = this.#detectBorder(startVison, endVision, roadBorders, traffic);
             this.detectBorder.push(detectBorder);
         }
 
@@ -61,13 +61,23 @@ class Awareness {
         }
     }
 
-    #detectBorder(startVison, endVision, roadBorders) {
+    #detectBorder(startVison, endVision, roadBorders, traffic) {
         let borderHit = [];
 
         for (let i = 0; i < roadBorders.length; i++) {
             const hit = getVisionHit(startVison, endVision, roadBorders[i][0], roadBorders[i][1]);
             if (hit) {
                 borderHit.push(hit);
+            }
+        }
+
+        for (let i = 0; i < traffic.length; i++) {
+            const carRect = traffic[i].carRect;
+            for (let j = 0; j < carRect.length; j++) {
+                const hit = getVisionHit(startVison, endVision, carRect[j], carRect[ (j + 1) % carRect.length ]);
+                if (hit) {
+                    borderHit.push(hit);
+                }
             }
         }
 

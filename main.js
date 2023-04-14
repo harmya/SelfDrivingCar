@@ -7,7 +7,10 @@ const road = new Road(canvas.width/2, canvas.width * 0.9, 3); //road.js
 const car = new Car(road.getLaneCenter(2), 100, 50, 30, '#2192FF', "main");  // car.js
 
 const traffic = [
-    new Car(road.getLaneCenter(1), 200, 50, 30, 'orange', "dummy")
+    new Car(road.getLaneCenter(1), -200, 50, 30, 'orange', "dummy"),
+    new Car(road.getLaneCenter(3), -300, 50, 30, 'orange', "dummy"),
+    new Car(road.getLaneCenter(1), -350, 50, 30, 'orange', "dummy"),
+    new Car(road.getLaneCenter(2), -400, 50, 30, 'orange', "dummy")
 ]
 
 animate();

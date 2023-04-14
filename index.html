@@ -14,6 +14,7 @@
     <div class="road">
         <canvas id="canvas"></canvas>
         <script src="awareness.js"></script>
+        <script src="network.js"></script>
         <script src="calculation.js"></script>
         <script src="controls.js"></script>
         <script src="road.js"></script>
@@ -22,8 +23,15 @@
     </div>
 
     <div class="start">
-        <button class="start-button" onclick="startGame()">Start Simulation</button>
+        <button class="start-button" onclick="startSimulation()">Start Simulation</button>
     </div>
     
 </body>
+
+<script>
+    function startSimulation() {
+        // refresh page
+        location.reload();
+    }
+</script>
 </html>
