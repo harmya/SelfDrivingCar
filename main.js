@@ -1,0 +1,5 @@
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.height = window.innerHeight;
+const deviceWidth = window.innerWidth;
+canvas.width = deviceWidth / 5;

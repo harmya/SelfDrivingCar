@@ -1,0 +1,22 @@
+body {
+    background: slategray;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    margin: 0;
+}
+
+.road {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#canvas {
+    background: #ffffff;
+    color: #555555;
+    font-size: 14px;
+    padding: 6px 12px;
+    /*set height to be the height of the entire page*/
+    
+}
