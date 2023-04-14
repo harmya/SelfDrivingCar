@@ -1,5 +1,5 @@
 body {
-    background: slategray;
+    background: rgb(137, 144, 151);
     color: #ffffff;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
@@ -11,12 +11,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    border-left: black solid 1px;
+    border-right: black solid 1px;
 }
 #canvas {
-    background: #ffffff;
+    background: #403e39;
     color: #555555;
     font-size: 14px;
     padding: 6px 12px;
+    border-left: darkgrey solid 10px;
+    border-right: darkgray solid 10px;
+    border-bottom: white solid 10px;
     /*set height to be the height of the entire page*/
-    
+
 }
