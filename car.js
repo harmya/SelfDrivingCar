@@ -98,10 +98,6 @@ class Car {
         if (this.x > canvas.width - this.width) {
             this.x = canvas.width - this.width;
         }
-
-        if (this.y < this.height/(1.5)) {
-            this.y = this.height/(1.5);
-        }
         if (this.y > canvas.height - this.height) {
             this.y = canvas.height - this.height;
         }

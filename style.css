@@ -22,7 +22,23 @@ body {
     padding: 6px 12px;
     border-left: darkgrey solid 10px;
     border-right: darkgray solid 10px;
-    border-bottom: white solid 10px;
+    border-bottom: white solid 10px; 
     /*set height to be the height of the entire page*/
+}
+.start {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+}
 
+.start-button {
+    background: #ffffff;
+    color: #555555;
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid #555555;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
