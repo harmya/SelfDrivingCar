@@ -1,26 +1,29 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 200;
+canvas.width = 300;
 canvas.height = window.innerHeight - window.innerHeight * 0.1;
 
+let numLanes = 4;
 
-const road = new Road(canvas.width/2, canvas.width * 0.9, 3); //road.js
+canvas.width = 60 * numLanes;
+
+const road = new Road(canvas.width/2, canvas.width * 0.9, numLanes); //road.js
 road.drawRoad(ctx);
 
 let generation = 0;
 
 let traffic = [
-    new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1), 
-    -1 * (Math.floor(Math.random() * 400) + 500), 50, 30, 'orange', "dummy"),
+    new Car(road.getLaneCenter(Math.floor(Math.random() * (numLanes)) + 1), 
+    -1 * (Math.floor(Math.random() * 400) + 300), 50, 30, 'orange', "dummy"),
 
-    new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1), 
-    -1 * (Math.floor(Math.random() * 400) + 500), 50, 30, 'orange', "dummy"),
+    new Car(road.getLaneCenter(Math.floor(Math.random() * (numLanes)) + 1), 
+    -1 * (Math.floor(Math.random() * 400) + 300), 50, 30, 'orange', "dummy"),
     
-    new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1), 
-    -1 * (Math.floor(Math.random() * 400) + 500), 50, 30, 'orange', "dummy"),
+    new Car(road.getLaneCenter(Math.floor(Math.random() * (numLanes)) + 1), 
+    -1 * (Math.floor(Math.random() * 400) + 300), 50, 30, 'orange', "dummy"),
 
-    new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1), 
-    -1 * (Math.floor(Math.random() * 400) + 500), 50, 30, 'orange', "dummy")
+    new Car(road.getLaneCenter(Math.floor(Math.random() * (numLanes)) + 1), 
+    -1 * (Math.floor(Math.random() * 400) + 300), 50, 30, 'orange', "dummy")
 
 ]
 
@@ -36,7 +39,8 @@ let bestCar = null;
 
 function generateCars(n) {
     const bestCar_y = bestCar ? bestCar.y : 400;
-    const bestCar_x = bestCar ? bestCar.x : road.getLaneCenter(2);
+    let randomLane = Math.floor(Math.random() * (numLanes)) + 1;
+    const bestCar_x = bestCar ? bestCar.x : road.getLaneCenter(randomLane);
     const cars = [];
     for (let i = 0; i < n; i++) {
         const new_car = new Car(bestCar_x, bestCar_y, 50, 30, '#2192FF', "main");
@@ -114,20 +118,22 @@ function animate() {
         c=>c.y==Math.min(...traffic.map(c=>c.y))
     );
 
-    bestCar = cars.find (
-        c=>c.y==Math.min(...cars.map(c=>c.y && !c.damaged))
+    //find the car that is most forward and is not damaged
+
+    bestCar = cars.find(
+        c => c.y === Math.min(...cars.map(c => c.y))
     );
 
 
     //check how many times animate has been called
     console.log("animate called");
     if (allCarsDamaged()) {
-
         generation++;
         document.getElementById("generation").innerHTML = generation;
 
         bestCar.damaged = false;
-        bestCar.x = road.getLaneCenter(2);
+        randomLane = Math.floor(Math.random() * (numLanes)) + 1;
+        bestCar.x = road.getLaneCenter(randomLane);
         bestCar.speed = 0;
         
         numCars = document.getElementById("cars-slider").value;
@@ -135,12 +141,16 @@ function animate() {
 
         const json_network = JSON.stringify(bestCar.network);
 
+        const mutationRate = document.getElementById("mutation-slider").value;
 
         for (let i = 0; i < cars.length; i++) {
             cars[i].network = JSON.parse(json_network);
             if (i != 0) {
-                NeuralNetwork.mutate(cars[i].network, 0.3);
+                NeuralNetwork.mutate(cars[i].network, mutationRate);
             }
+        }
+        if (cars.length == 1) {
+            NeuralNetwork.mutate(cars[0].network, 0.15);
         }
 
         bestCar_y = bestCar.y;
@@ -150,7 +160,7 @@ function animate() {
         numTrafficCars = numTrafficCars > 0 ? numTrafficCars : 1;
         traffic = [];
         for (let i = 0; i < numTrafficCars; i++) {
-            traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
+            traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * numLanes) + 1),
             (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"));
         }
         
@@ -207,13 +217,14 @@ function allCarsDamaged() {
     
     const bestCarPoisiton = bestCar.y;
 
-    if (bestCarPoisiton < (trafficCarMostForward.y - 300)) {
+    if (bestCarPoisiton < (trafficCarMostForward.y - 200) && bestCar.y < trafficCarMostForward.y) {
         return true;
     }
 
     const difference = Math.abs(bestCarPoisiton - trafficCarMostForward.y);
     //if the best car is too far away from the traffic
-    if (difference > 800) {
+    if (difference > 1000) {
+        console.log("best car difference is too far away from traffic");
         return true;
     }
 
@@ -228,6 +239,7 @@ function allCarsDamaged() {
                 }
             }
         }
-    }    
+    } 
+    console.log("all cars are damaged");
     return true;
 }

@@ -2,7 +2,7 @@ class Road {
     constructor(x, width, lanes) {
         this.x = x;
         this.width = width;
-        this.lanes = 3;
+        this.lanes = lanes;
         this.laneWidth = this.width/this.lanes;
 
         this.left = x - this.width/2;
