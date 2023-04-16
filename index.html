@@ -32,14 +32,26 @@
             <input type="range" min="1" max="10" step="1" class="traffic-slider" id="traffic-slider">
             <p>Traffic: <span id="traffic"></span></p>
             <script>
-                var slider = document.getElementById("traffic-slider");
-                var output = document.getElementById("traffic");
-                output.innerHTML = slider.value;
-                slider.oninput = function() {
-                    output.innerHTML = this.value;
+                var traffic_slider = document.getElementById("traffic-slider");
+                var traffic_output = document.getElementById("traffic");
+                traffic_output.innerHTML = traffic_slider.value;
+                traffic_slider.oninput = function() {
+                    traffic_output.innerHTML = this.value;
                 }
             </script>
 
+            <input type="range" min="1" max="1100" step="10" class="cars-slider" id="cars-slider">
+            <p>Cars: <span id="cars"></span></p>
+            <script>
+                var car_slider = document.getElementById("cars-slider");
+                var car_output = document.getElementById("cars");
+                car_output.innerHTML = car_slider.value;
+                car_slider.oninput = function() {
+                    car_output.innerHTML = this.value;
+                }
+            </script>
+
+            <p>Generation: <span class="generation" id="generation">0</span> </p>
 
 
         </div>

@@ -7,6 +7,7 @@ canvas.height = window.innerHeight - window.innerHeight * 0.1;
 const road = new Road(canvas.width/2, canvas.width * 0.9, 3); //road.js
 road.drawRoad(ctx);
 
+let generation = 0;
 
 let traffic = [
     new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1), 
@@ -39,7 +40,6 @@ function generateCars(n) {
     const cars = [];
     for (let i = 0; i < n; i++) {
         const new_car = new Car(bestCar_x, bestCar_y, 50, 30, '#2192FF', "main");
-        new_car.speed = bestCar ? bestCar.speed : 0;
         cars.push(new_car);
     }
     cars[0] = bestCar ? bestCar : cars[0];
@@ -48,7 +48,10 @@ function generateCars(n) {
 
 console.log("generate cars");
 
-let cars = generateCars(1000);
+let numCars = document.getElementById("cars-slider").value;
+numCars = numCars ? numCars : 100;
+
+let cars = generateCars(numCars);
 //initialize the best car to the first car in the array
 bestCar = cars[0];
 
@@ -119,11 +122,16 @@ function animate() {
     //check how many times animate has been called
     console.log("animate called");
     if (allCarsDamaged()) {
+
+        generation++;
+        document.getElementById("generation").innerHTML = generation;
+
         bestCar.damaged = false;
         bestCar.x = road.getLaneCenter(2);
+        bestCar.speed = 0;
         
-
-        cars = generateCars(1000);
+        numCars = document.getElementById("cars-slider").value;
+        cars = generateCars(numCars);
 
         const json_network = JSON.stringify(bestCar.network);
 
@@ -131,7 +139,7 @@ function animate() {
         for (let i = 0; i < cars.length; i++) {
             cars[i].network = JSON.parse(json_network);
             if (i != 0) {
-                NeuralNetwork.mutate(cars[i].network, 0.3);
+                NeuralNetwork.mutate(cars[i].network, 0.2);
             }
         }
 
