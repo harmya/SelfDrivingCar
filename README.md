@@ -1,5 +1,7 @@
 # Project: Self Driving Car using Neural Networks
 
+(Still working on it, suggestions welcome!) 
+
 ### Introduction
 This project uses deep neural networks to learn how to drive a car.
 A car can go forward, backward, left and right. The goal is to teach the car to drive itself amongst the traffic.
