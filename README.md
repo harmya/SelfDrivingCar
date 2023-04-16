@@ -1,4 +1,4 @@
-# Project: SelfDrivingCar
+# Project: Self Driving Car using Neural Networks
 
 ### Introduction
 This project uses deep neural networks to learn how to drive a car.
