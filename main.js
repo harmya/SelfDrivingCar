@@ -69,6 +69,7 @@ start = false;
 document.getElementById("start").addEventListener("click", function () {
     //start the animation
     console.log("start");
+    document.getElementById("message-pause-not-start").style.display = "none";
     if (paused || start) {
         //set class if-paused to display
         document.getElementById("message-start").style.display = "block";
@@ -81,29 +82,20 @@ document.getElementById("start").addEventListener("click", function () {
 
 //get the value of the pause button
 document.getElementById("pause").addEventListener("click", function () {
+    if (!start) {
+        //set class not-started to display
+        document.getElementById("message-pause-not-start").style.display = "block";
+        console.log("start is false");
+        return;
+    }
     //pause the animation
     paused = !paused;
-    animate();
-});
-
-//get the value of the spawn traffic button
-document.getElementById("spawnTraffic").addEventListener("click", function () {
-    //spawn traffic
-    console.log("spawnTraffic");
-    //get location of the best car
-    let randomLane = Math.floor(Math.random() * 3) + 1;
-    let randomPosition = -1 * (Math.floor(Math.random() * 400) + 800);
-    let carLocation = bestCar.y > 0 ? randomPosition : bestCar.y + randomPosition;
-    traffic.push(new Car(road.getLaneCenter(randomLane), carLocation, 50, 30, 'orange', "dummy"));
-
-    for (let i = 0; i < 4; i++) {
-        randomLane = Math.floor(Math.random() * 3) + 1;
-        randomPosition = -1 * (Math.floor(Math.random() * 200) + 200);
-        carLocation = carLocation + randomPosition;
-        traffic.push(new Car(road.getLaneCenter(randomLane), carLocation, 50, 30, 'orange', "dummy"));
+    if (paused) {
+        //change text to resume
+        document.getElementById("pause").innerHTML = "Resume";
     }
 
-    console.log(traffic);
+    animate();
 });
 
 
@@ -145,19 +137,15 @@ function animate() {
 
         bestCar_y = bestCar.y;
 
-        traffic = [
-            new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
-            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"),
-            new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
-            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 300), 50, 30, 'orange', "dummy"),
-            new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
-            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"),
-            new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
-            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"),
-            new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
-            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 400), 50, 30, 'orange', "dummy")
-        ]
-
+        let numTrafficCars = document.getElementById("traffic-slider").value;
+        numTrafficCars = parseInt(numTrafficCars);
+        numTrafficCars = numTrafficCars > 0 ? numTrafficCars : 1;
+        traffic = [];
+        for (let i = 0; i < numTrafficCars; i++) {
+            traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * 3) + 1),
+            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"));
+        }
+        
         //if there is an item in local storage, delete it
         if (localStorage.getItem("bestCar")) {
             localStorage.removeItem("bestCar");

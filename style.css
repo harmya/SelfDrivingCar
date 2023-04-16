@@ -59,3 +59,8 @@ body {
     display: none;
     color: red;
 }
+
+.not-start {
+    display: none;
+    color: red;
+}

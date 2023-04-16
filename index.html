@@ -25,8 +25,23 @@
             <button id="start" class="button">Start</button>
             <span class="if-paused" id="message-start">Simulation already running</span>
             <button id="reset" class="button" onclick="restart()">Reset</button>
+
             <button id="pause" class="button">Pause</button>
-            <button id="spawnTraffic" class="button">Spawn Traffic</button>
+            <span class="not-start" id="message-pause-not-start">Simulation has not been started!</span>
+
+            <input type="range" min="1" max="10" step="1" class="traffic-slider" id="traffic-slider">
+            <p>Traffic: <span id="traffic"></span></p>
+            <script>
+                var slider = document.getElementById("traffic-slider");
+                var output = document.getElementById("traffic");
+                output.innerHTML = slider.value;
+                slider.oninput = function() {
+                    output.innerHTML = this.value;
+                }
+            </script>
+
+
+
         </div>
         <canvas id="canvas"></canvas>
         <script src="awareness.js"></script>
