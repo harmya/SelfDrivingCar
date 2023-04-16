@@ -24,7 +24,7 @@ There are multiple JS Scripts that do different jobs, plus there is a HTML and C
 - If you want to chnage the properties of the car, you can do that in car.js
 
 ### Demo
-![Gif]([https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif](https://github.com/harmya/SelfDrivingCar/blob/master/assets/selfDrivingDemo.gif))
+![Gif]([https://github.com/harmya/SelfDrivingCar/blob/master/assets/selfDrivingDemo.gif])
 
 ### Check it out at: https://harmya.github.io/SelfDrivingCar/
 
