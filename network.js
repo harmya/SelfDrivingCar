@@ -15,6 +15,23 @@ class NeuralNetwork {
 
         return curr_output;
     }
+
+    static mutate(network, mutationRate) {
+        for (let i = 0; i < network.layers.length; i++) {
+            for (let j = 0; j < network.layers[i].weights.length; j++) {
+                for (let k = 0; k < network.layers[i].weights[j].length; k++) {
+                    if (Math.random() < mutationRate) {
+                        network.layers[i].weights[j][k] = Math.random() * 2 - 1;
+                    }
+                }
+            }
+            for (let j = 0; j < network.layers[i].biases.length; j++) {
+                if (Math.random() < mutationRate) {
+                    network.layers[i].biases[j] = Math.random() * 2 - 1;
+                }
+            }
+        }
+    }
 }
 
 class Layer {

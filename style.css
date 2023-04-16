@@ -7,12 +7,12 @@ body {
     margin: 0;
 }
 
-.road {
+.main-area {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     align-items: stretch;
-
+    gap: 100px;
     /* border-left: black solid 1px;
     border-right: black solid 1px; */
 }
@@ -36,7 +36,7 @@ body {
     padding: 6px 12px;
 }
 
-.start-button {
+.button {
     background: #ffffff;
     color: #555555;
     font-size: 14px;
@@ -45,4 +45,17 @@ body {
     border-radius: 4px;
     cursor: pointer;
     margin-bottom: 10px;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 5%;
+}
+
+.if-paused {
+    display: none;
+    color: red;
 }

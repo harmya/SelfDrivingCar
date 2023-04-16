@@ -10,7 +10,7 @@ class Car {
         this.color = color;
         
         //movement attributes of the car
-        let random_speed = 1 + Math.random() * 1.5;
+        let random_speed = 1 + Math.random() * 2;
         this.maxForwardSpeed = type === "main" ? 5 : random_speed;
         this.maxBackwardSpeed = 2;
         this.angle = 0;

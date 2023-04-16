@@ -6,12 +6,28 @@
     <title>Self Driving Car</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://img.icons8.com/ios/50/000000/car.png">
     <link rel="stylesheet" href="style.css">
 </head>
 
 
 <body>
-    <div class="road">
+
+
+    <div class="main-area">
+        <div class="intro">
+            <h1>
+                Self Driving Car
+            </h1>
+            <p>
+                This is a self driving car made using neural networks.
+            </p>
+            <button id="start" class="button">Start</button>
+            <span class="if-paused" id="message-start">Simulation already running</span>
+            <button id="reset" class="button" onclick="restart()">Reset</button>
+            <button id="pause" class="button">Pause</button>
+            <button id="spawnTraffic" class="button">Spawn Traffic</button>
+        </div>
         <canvas id="canvas"></canvas>
         <script src="awareness.js"></script>
         <script src="network.js"></script>
@@ -21,11 +37,13 @@
         <script src="car.js"></script>
         <script src="main.js"></script>
     </div>
-
-
-    <div class="start">
-        <button id="start" class="start-button">Start Simulation</button>
-    </div>
-    
+     
 </body>
 </html>
+
+<script>
+    function restart() {
+        //smooth reload the page
+        location.reload(true/false);
+    }
+</script>
