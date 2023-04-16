@@ -21,10 +21,3 @@ There are multiple JS Scripts that do different jobs, plus there is a HTML and C
 <img src="https://github.com/harmya/SelfDrivingCar/blob/master/assets/selfDrivingDemo.gif" width="300" height="500" />
 
 ### Check it out at: https://harmya.github.io/SelfDrivingCar/
-
-### How to play around with the code
-- Clone the repo
-- Open index.html in your browser to run it
-- All the main settings can be found in main.js, and if you want to change the neural network, you can do that in network.js
-- If you want to chnage the properties of the car, you can do that in car.js
-
