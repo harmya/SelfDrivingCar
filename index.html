@@ -29,6 +29,9 @@
             <button id="pause" class="button">Pause</button>
             <span class="not-start" id="message-pause-not-start">Simulation has not been started!</span>
 
+            <button id="next-generation" class="button">Next Generation</button>
+
+            
             <input type="range" min="1" max="20" step="1" class="traffic-slider" id="traffic-slider">
             <p>Traffic: <span id="traffic"></span></p>
             <script>
@@ -40,7 +43,7 @@
                 }
             </script>
 
-            <input type="range" min="1" max="2100" step="10" class="cars-slider" id="cars-slider">
+            <input type="range" min="1" max="1110" step="10" class="cars-slider" id="cars-slider">
             <p>Cars: <span id="cars"></span></p>
             <script>
                 var car_slider = document.getElementById("cars-slider");
@@ -62,7 +65,10 @@
                 }
             </script>
 
+
+
             <p>Generation: <span class="generation" id="generation">0</span> </p>
+
 
 
         </div>

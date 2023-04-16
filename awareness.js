@@ -1,8 +1,8 @@
 class Awareness {
     constructor(car) {
         this.car = car;
-        this.visionCount = 5;
-        this.visionLength = 120;
+        this.visionCount = 10;
+        this.visionLength = 200;
         this.visionSpread = Math.PI/2;
         this.vision = [];
         this.detectBorder = [];

@@ -5,7 +5,7 @@ canvas.height = window.innerHeight - window.innerHeight * 0.1;
 
 let numLanes = 5;
 
-canvas.width = 60 * numLanes;
+canvas.width = 60 * numLanes + 20;
 
 const road = new Road(canvas.width/2, canvas.width * 0.9, numLanes); //road.js
 road.drawRoad(ctx);
@@ -43,14 +43,14 @@ function generateCars(n) {
     const bestCar_x = bestCar ? bestCar.x : road.getLaneCenter(randomLane);
     const cars = [];
     for (let i = 0; i < n; i++) {
-        const new_car = new Car(bestCar_x, bestCar_y, 50, 30, '#2192FF', "main");
+        const new_car = new Car(bestCar_x, bestCar_y, 50, 20, '#2192FF', "main");
         cars.push(new_car);
     }
     cars[0] = bestCar ? bestCar : cars[0];
     return cars;
 }
 
-console.log("generate cars");
+//console.log("generate cars");
 
 let numCars = document.getElementById("cars-slider").value;
 numCars = numCars ? numCars : 100;
@@ -61,26 +61,29 @@ bestCar = cars[0];
 
 //draw main cars
 for (let i = 0; i < cars.length; i++) {
+    //
     if (i == 0) {
         cars[i].drawCar(ctx, true);
     } else {
         cars[i].drawCar(ctx, false);
     }
+
 }
 
 
 paused = false;
 start = false;
+nextGeneration = false;
 //listen to the value of start button
 
 document.getElementById("start").addEventListener("click", function () {
     //start the animation
-    console.log("start");
+    //("start");
     document.getElementById("message-pause-not-start").style.display = "none";
     if (paused || start) {
         //set class if-paused to display
         document.getElementById("message-start").style.display = "block";
-        console.log("either paused or start is true");
+        //console.log("either paused or start is true");
     } else {
         start = !start;
         animate();
@@ -105,6 +108,13 @@ document.getElementById("pause").addEventListener("click", function () {
     animate();
 });
 
+//get the value of the next-generation button
+document.getElementById("next-generation").addEventListener("click", function () {
+    nextGeneration = !nextGeneration;
+});
+
+
+
 
 
 
@@ -119,10 +129,13 @@ function animate() {
     );
 
     //find the car that is most forward and is not damaged
-
     bestCar = cars.find(
         c => c.y === Math.min(...cars.map(c => c.y))
     );
+
+
+
+
 
 
     //check how many times animate has been called
@@ -137,6 +150,7 @@ function animate() {
         bestCar.speed = 0;
         
         numCars = document.getElementById("cars-slider").value;
+        
         cars = generateCars(numCars);
 
         const json_network = JSON.stringify(bestCar.network);
@@ -149,20 +163,37 @@ function animate() {
                 NeuralNetwork.mutate(cars[i].network, mutationRate);
             }
         }
-        if (cars.length == 1) {
-            NeuralNetwork.mutate(cars[0].network, 0.15);
-        }
-
+        
         bestCar_y = bestCar.y;
 
         let numTrafficCars = document.getElementById("traffic-slider").value;
         numTrafficCars = parseInt(numTrafficCars);
         numTrafficCars = numTrafficCars > 0 ? numTrafficCars : 1;
         traffic = [];
-        for (let i = 0; i < numTrafficCars; i++) {
-            traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * numLanes) + 1),
-            (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"));
+        traffic_lanes = [];
+        if (numTrafficCars > 5) {
+            //make sure there are 3 cars in 3 lanes
+            for (let i = 0; i < 5; i++) {
+                traffic.push(new Car(road.getLaneCenter(i + 1),
+                (-1 * Math.floor(Math.random() * 700) + bestCar_y - 300), 50, 30, 'orange', "dummy"));
+            }
+            //then randomly generate the rest of the cars
+            for (let i = 0; i < numTrafficCars - 5; i++) {
+                traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * numLanes) + 1),
+                (-1 * Math.floor(Math.random() * 800) + bestCar_y - 100), 50, 30, 'orange', "dummy"));
+            }
+
+        } else {
+            //if there are less than 3 cars, just randomly generate them
+            for (let i = 0; i < numTrafficCars; i++) {
+                traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * numLanes) + 1),
+                (-1 * Math.floor(Math.random() * 700) + bestCar_y - 200), 50, 30, 'orange', "dummy"));
+            }
         }
+        
+
+
+        
         
         //if there is an item in local storage, delete it
         if (localStorage.getItem("bestCar")) {
@@ -170,7 +201,7 @@ function animate() {
         }
         //store the best car network as json in local storage
         localStorage.setItem("bestCar", json_network);
-
+        
 
 
     } 
@@ -214,7 +245,12 @@ function animate() {
 }
 
 function allCarsDamaged() {
-    
+
+    if (nextGeneration) {
+        nextGeneration = false;
+        return true;
+    }
+
     const bestCarPoisiton = bestCar.y;
 
     if (bestCarPoisiton < (trafficCarMostForward.y - 200) && bestCar.y < trafficCarMostForward.y) {
@@ -223,23 +259,24 @@ function allCarsDamaged() {
 
     const difference = Math.abs(bestCarPoisiton - trafficCarMostForward.y);
     //if the best car is too far away from the traffic
-    if (difference > 1000) {
-        console.log("best car difference is too far away from traffic");
+    if (difference > 1200) {
+        //console.log("best car difference is too far away from traffic");
         return true;
     }
+
 
     
     //check if all cars near the best car are damaged
     for (let i = 0; i < cars.length; i++) {
-        if (cars[i].y > bestCarPoisiton - 200 && cars[i].y < bestCarPoisiton + 200) {
+        if (cars[i].y > bestCarPoisiton - 100 && cars[i].y < bestCarPoisiton + 100) {
             if (!cars[i].damaged) {
                 const distanceToTraffic = Math.abs(cars[i].y - trafficCarMostForward.y);
-                if (distanceToTraffic < 1000 || cars[i].speed > 1) {
+                if (distanceToTraffic < 1200 || cars[i].speed > 1) {
                     return false;
                 }
             }
         }
     } 
-    console.log("all cars are damaged");
+    //console.log("all cars are damaged");
     return true;
 }

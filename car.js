@@ -8,34 +8,40 @@ class Car {
 
         //color of the car
         this.color = color;
-        
+
         //movement attributes of the car
         let random_speed = 1 + Math.random() * 1.3;
-        this.maxForwardSpeed = type === "main" ? 4 : random_speed;
+        this.maxForwardSpeed = type === "main" ? 5 : random_speed;
         this.maxBackwardSpeed = 2;
         this.angle = 0;
         this.speed = 0;
-        this.acceleration = 0.3;
-        this.friction = 0.09;
+        this.acceleration = 0.5;
+        this.friction = 0.1;
 
         //controls of the car
         this.controls = new Controls(type);
 
+    
+
         //car awareness
-        
+
         if (type == "main") {
             this.awareness = new Awareness(this);
-            this.network = new NeuralNetwork([this.awareness.visionCount, 10, 10, 4]);
+            this.network = new NeuralNetwork([this.awareness.visionCount, 20, 10, 4]);
         }
-
-        //rectangle around the car
-        this.carRect = this.#createRectAroundCar();
 
         //car damage
         this.damaged = false;
 
+        //rectangle around the car
+        this.carRect = this.#createRectAroundCar();
+
         //car controlled by nerual network
         this.controlByAI = type === "main" ? true : false;
+
+        //car type
+        this.type_car = type === "main" ? true : false;
+
     }
 
     drawCar(ctx, aware) {
@@ -45,13 +51,15 @@ class Car {
         } else {
             ctx.fillStyle = this.color;
         }
-
         
         ctx.beginPath();
+        
         ctx.moveTo(this.carRect[0].x, this.carRect[0].y);
+        
 
         for (let i = 1; i < this.carRect.length; i++) {
             ctx.lineTo(this.carRect[i].x, this.carRect[i].y);
+            
         }
 
         ctx.fill();
@@ -96,8 +104,11 @@ class Car {
             const distancesToIntersections = this.awareness.detectBorder.map(
                 vis=>vis==null ? 0 : 1 - vis.offset
             );
+
             //console.log(distancesToIntersections);
             const outputs = NeuralNetwork.networkFeedForward(distancesToIntersections, this.network);
+
+
             //console.log(outputs);
 
             if (this.controlByAI) {
@@ -178,14 +189,16 @@ class Car {
         const rad = Math.hypot(this.width, this.height) / 2;
         const angle = Math.atan(this.height / this.width);
 
+        const narrowCar = 0.2;
+
         points.push({
-            x: this.x - rad * Math.sin(this.angle - angle + 0.2),
-            y: this.y - rad * Math.cos(this.angle - angle + 0.2)
+            x: this.x - rad * Math.sin(this.angle - angle + narrowCar),
+            y: this.y - rad * Math.cos(this.angle - angle + narrowCar)
         });
 
         points.push({
-            x: this.x - rad * Math.sin(this.angle + angle - 0.2),
-            y: this.y - rad * Math.cos(this.angle + angle - 0.2)
+            x: this.x - rad * Math.sin(this.angle + angle - narrowCar),
+            y: this.y - rad * Math.cos(this.angle + angle - narrowCar)
         });
 
         points.push({

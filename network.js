@@ -17,6 +17,22 @@ class NeuralNetwork {
     }
 
     static mutate(network, mutationRate) {
+
+        //penalize the network for going backwards
+        if (bestCar.speed < 0) {
+            //console.log("penalized for going backwards");
+            mutationRate = 0.5;
+        }
+
+        //penalize the network for crashing very early
+        if (bestCar.y > trafficCarMostForward.y + 100) {
+            //console.log("penalized for crashing early");
+            mutationRate = 0.5;
+        }
+
+        //console.log("mutation rate: " + mutationRate);
+
+
         for (let i = 0; i < network.layers.length; i++) {
             for (let j = 0; j < network.layers[i].weights.length; j++) {
                 for (let k = 0; k < network.layers[i].weights[j].length; k++) {
