@@ -139,7 +139,7 @@ function animate() {
         for (let i = 0; i < cars.length; i++) {
             cars[i].network = JSON.parse(json_network);
             if (i != 0) {
-                NeuralNetwork.mutate(cars[i].network, 0.2);
+                NeuralNetwork.mutate(cars[i].network, 0.3);
             }
         }
 
@@ -207,20 +207,20 @@ function allCarsDamaged() {
     
     const bestCarPoisiton = bestCar.y;
 
-    if (bestCarPoisiton < (trafficCarMostForward.y - 500)) {
+    if (bestCarPoisiton < (trafficCarMostForward.y - 300)) {
         return true;
     }
 
     const difference = Math.abs(bestCarPoisiton - trafficCarMostForward.y);
     //if the best car is too far away from the traffic
-    if (difference > 1200) {
+    if (difference > 800) {
         return true;
     }
 
     
     //check if all cars near the best car are damaged
     for (let i = 0; i < cars.length; i++) {
-        if (cars[i].y > bestCarPoisiton - 400 && cars[i].y < bestCarPoisiton + 400) {
+        if (cars[i].y > bestCarPoisiton - 200 && cars[i].y < bestCarPoisiton + 200) {
             if (!cars[i].damaged) {
                 const distanceToTraffic = Math.abs(cars[i].y - trafficCarMostForward.y);
                 if (distanceToTraffic < 1000 || cars[i].speed > 1) {
