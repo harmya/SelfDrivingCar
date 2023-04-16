@@ -115,7 +115,7 @@ function animate() {
     );
 
     bestCar = cars.find (
-        c=>c.y==Math.min(...cars.map(c=>c.y))
+        c=>c.y==Math.min(...cars.map(c=>c.y && !c.damaged))
     );
 
 
