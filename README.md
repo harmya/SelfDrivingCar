@@ -1,6 +1,6 @@
 # Project: Self Driving Car using Neural Networks
 
-(Still working on it, suggestions welcome!) 
+Suggestions welcome :) 
 
 ### Introduction
 This project uses deep neural networks to learn how to drive a car.
@@ -16,6 +16,15 @@ There are multiple JS Scripts that do different jobs, plus there is a HTML and C
 - awareness.js: Creates the sensors in front of the car to detect other cars or road boundary.
 - network.js: Initialise the neural network.
 - calculation.js: some math stuff I need to detect collisons.
+
+### How to play around with the code
+- Clone the repo
+- Open index.html in your browser to run it
+- All the main settings can be found in main.js, and if you want to change the neural network, you can do that in network.js
+- If you want to chnage the properties of the car, you can do that in car.js
+
+### Demo
+
 
 ### Check it out at: https://harmya.github.io/SelfDrivingCar/
 
