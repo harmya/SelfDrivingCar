@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = 300;
 canvas.height = window.innerHeight - window.innerHeight * 0.1;
 
-let numLanes = 4;
+let numLanes = 5;
 
 canvas.width = 60 * numLanes;
 
