@@ -51,18 +51,19 @@ class Car {
         } else {
             ctx.fillStyle = this.color;
         }
+
         
-        ctx.beginPath();
+         ctx.beginPath();
         
-        ctx.moveTo(this.carRect[0].x, this.carRect[0].y);
+         ctx.moveTo(this.carRect[0].x, this.carRect[0].y);
         
 
         for (let i = 1; i < this.carRect.length; i++) {
-            ctx.lineTo(this.carRect[i].x, this.carRect[i].y);
+             ctx.lineTo(this.carRect[i].x, this.carRect[i].y);
             
-        }
+         }
 
-        ctx.fill();
+         ctx.fill();
 
         /*
         //save the current state of the canvas
