@@ -42,6 +42,7 @@ class Car {
         //car type
         this.type_car = type === "main" ? true : false;
 
+        this.modelOutputs = [];
     }
 
     drawCar(ctx, aware) {
@@ -106,10 +107,11 @@ class Car {
                 vis=>vis==null ? 0 : 1 - vis.offset
             );
 
+
             //console.log(distancesToIntersections);
             const outputs = NeuralNetwork.networkFeedForward(distancesToIntersections, this.network);
-
-
+            this.modelOutputs = outputs;
+            
             //console.log(outputs);
 
             if (this.controlByAI) {

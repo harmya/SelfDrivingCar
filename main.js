@@ -131,6 +131,17 @@ function animate() {
         c => c.y === Math.min(...cars.map(c => c.y))
     );
 
+    //display the awareness of the best car
+
+    if (bestCar) {
+        const distancesToIntersections = bestCar.awareness.detectBorder.map(
+            vis=>vis==null ? 0 : 1 - vis.offset
+        );
+        console.log(distancesToIntersections);
+        console.log(bestCar.modelOutputs);
+        //sleep for 2 seconds
+
+    }
 
 
 
