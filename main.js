@@ -1,9 +1,9 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 700;
+canvas.width = 400;
 canvas.height = window.innerHeight - window.innerHeight * 0.1;
 
-let numLanes = 5;
+let numLanes = 5
 
 const road = new Road(canvas.width/2, canvas.width * 0.9, numLanes); //road.js
 road.drawRoad(ctx);
@@ -41,7 +41,7 @@ function generateCars(n) {
     const bestCar_x = bestCar ? bestCar.x : road.getLaneCenter(randomLane);
     const cars = [];
     for (let i = 0; i < n; i++) {
-        const new_car = new Car(bestCar_x, bestCar_y, 40, 80, '#2192FF', "main");
+        const new_car = new Car(bestCar_x, bestCar_y, 40, 20, '#2192FF', "main");
         cars.push(new_car);
     }
     cars[0] = bestCar ? bestCar : cars[0];
